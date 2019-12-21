@@ -1,0 +1,31 @@
+﻿@page "/person"
+
+<h3>Presons</h3>
+
+Input name of person in the field below.
+
+<br />
+<br />
+
+<input type="text" @bind="request" />
+
+<br />
+<br />
+
+<button class="btn btn-primary" @onclick="processRequest">Search</button>
+
+<br />
+<br />
+
+<h4>Result</h4>
+
+NAME --
+<br />
+PLAYED IN:
+<br />
+DIRECTED:
+
+@code {
+    private string request = "";
+    public void processRequest() { }
+}

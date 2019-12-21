@@ -1,0 +1,29 @@
+﻿@page "/tag"
+
+<h3>Tags</h3>
+
+Input tag in the field below.
+
+<br />
+<br />
+
+<input type="text" @bind="request" />
+
+<br />
+<br />
+
+<button class="btn btn-primary" @onclick="processRequest">Search</button>
+
+<br />
+<br />
+
+<h4>Result</h4>
+
+TAG --
+<br />
+TITLES:
+
+@code {
+    private string request = "";
+    public void processRequest() { }
+}

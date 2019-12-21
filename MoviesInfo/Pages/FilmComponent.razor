@@ -1,0 +1,58 @@
+﻿@page "/film"
+
+@using MoviesInfo.Data
+@inject Repository repos
+@inject CollectionPrinter printer
+@inject Connection connection
+
+@using DatabaseLoader
+
+<h3>Films</h3>
+
+Input title of film in the field below.
+
+<br />
+<br />
+
+<input type="text" @bind="request" />
+
+<br />
+<br />
+
+<button class="btn btn-primary" @onclick="processRequest">Search</button>
+
+<br />
+<br />
+
+<h4>Result</h4>
+@if (this.movies != null && this.movies.Count != 0)
+{
+    @foreach (DisplayableMovie movie in this.movies)
+    {
+        <div>
+            <img src=@movie.pictureUrl /><br />
+            TITLE -- @movie.title<br />
+            ACTORS: @(CollectionPrinter.Print<String>(movie.getActors()))<br />
+            DIRECTORS: @(CollectionPrinter.Print<String>(movie.getDirectors()))<br />
+            TAGS: @(CollectionPrinter.Print<String>(movie.getTags()))<br />
+            RATINGS -- @movie.ratings<br />
+            DESCRIPTION: @movie.description
+        </div>
+    }
+}
+else {
+    <p>Nothing to show.</p>
+}
+
+@code {
+    private String request = "";
+    private ICollection<DisplayableMovie> movies;
+
+    public void processRequest()
+    {
+        ICollection<Movie> preResult = repos.GetMovies(request);
+        foreach (Movie movie in preResult)
+            repos.fillSimilar(movie);
+        this.movies = connection.toDisplayable(preResult);
+    }
+}
