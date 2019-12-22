@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using DatabaseLoader;
 
@@ -21,7 +23,29 @@ namespace MoviesInfo.Data
             return result;
         }
 
-        public void fillSimilar(Movie movie) {/* в следующих обновлениях */}
+        // плохо, но быстро (нет, не очень-то, на самом деле)
+        public void fillSimilar(Movie movie){
+            HashSet<string> similarSet = new HashSet<string>();
+            foreach (string tag in movie.getTags())
+                similarSet.UnionWith(this.GetTag(tag).getTitles());
+            IList similar = this.getRandom(new List<string>(similarSet), Movie.similarMoviesCount);
+            for (int i = 0; i < similar.Count; ++i)
+                movie.similar[i] = (string)similar[i];
+        }
+
+        public ICollection<string> GetSimilar(IEnumerable<Movie> movies) {
+            HashSet<string> similarSet = new HashSet<string>();
+            foreach (Movie movie in movies) {
+                this.fillSimilar(movie);
+                similarSet.UnionWith(movie.similar);
+            }
+            similarSet.Remove(null);
+            IList similar = this.getRandom(new List<string>(similarSet), Movie.similarMoviesCount);
+            string[] result = new string[similar.Count];
+            for (int i = 0; i < similar.Count; ++i)
+                result[i] = (string)similar[i];
+            return result;
+        }
 
         public Person GetPerson(string name) {
             Person result = this.context.persons.Where(person => person.name.Equals(name)).FirstOrDefault();
@@ -36,30 +60,31 @@ namespace MoviesInfo.Data
                 result.restore();
             return result;
         }
+
+        private IList getRandom(IList ts, int count) {
+            Object[] result;
+            if (ts.Count > count)
+            {
+                result = new Object[count];
+                int[] ints = new int[count];
+                Random random = new Random();
+                for (int i = 0; i < count; ++i)
+                {
+                    int rand;
+                    do
+                        rand = random.Next(ts.Count);
+                    while (ints.Contains(rand));
+                    ints[i] = rand;
+                    result[i] = ts[rand];
+                }
+            }
+            else
+            {
+                result = new Object[ts.Count];
+                for (int i = 0; i < ts.Count; ++i)
+                    result[i] = ts[i];
+            }
+            return result;
+        } 
     }
 }
-
-/*List<Movie> result = new List<Movie>();
-
-            Movie m1 = new Movie();
-            m1.title = title;
-            m1.ratings = 8;
-            m1.addActor("Федя Дюдзе");
-            m1.addActor("Мишель Д'Орош");
-            m1.addDirector("Андрей Григорьев");
-            m1.pictureUrl = title != null ? "http://gorod.tomsk.ru/uploads/11942/1240826431/869_7.jpg" : "https://cs5.pikabu.ru/post_img/2015/06/09/9/1433865319_2056920725.png";
-            m1.description = "m1 description";
-
-            Movie m2 = new Movie();
-            m2.title = title;
-            m2.ratings = 8;
-            m2.addActor("Вячеслав Шлягович");
-            m2.addActor("Мишель Зароков");
-            m2.addDirector("Дмитрий Григорьев");
-            m2.pictureUrl = title != null ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStD-omsY28QJreiVeEakK5-NHPFPz-U7RUSu_tmFzDJPfgZ4ldwA&s" : "https://cs5.pikabu.ru/post_img/2015/06/09/9/1433865319_2056920725.png";
-            m2.description = "m2 description";
-
-            result.Add(m1);
-            result.Add(m2);
-
-            return result;*/

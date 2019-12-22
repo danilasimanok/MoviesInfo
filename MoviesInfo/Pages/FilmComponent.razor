@@ -54,8 +54,8 @@ else
     public void processRequest()
     {
         ICollection<Movie> preResult = repos.GetMovies(request);
-        foreach (Movie movie in preResult)
-            repos.fillSimilar(movie);
+        /*foreach (Movie movie in preResult)
+            repos.fillSimilar(movie);*/
         this.movies = connection.toDisplayable(preResult);
     }
 }

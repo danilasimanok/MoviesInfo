@@ -1,0 +1,52 @@
+﻿@page "/similars"
+
+@using MoviesInfo.Data
+@inject Repository repos
+@inject CollectionPrinter printer
+
+@using DatabaseLoader
+
+<h3>SimilarsComponent</h3>
+
+Input titles of films, separated by commas, in the field below.
+
+<br />
+<br />
+
+<input type="text" @bind="request" />
+
+<br />
+<br />
+
+<button class="btn btn-primary" @onclick="processRequest">Search</button>
+
+<br />
+<br />
+
+<h4>Result</h4>
+@if (this.result == null || this.result.Count == 0 || this.result.First() == null)
+{
+    <p>Nothing to show.</p>
+}
+else
+{
+    foreach (String str in this.result)
+    {
+        @str<br />
+    }
+}
+
+@code {
+    private String request = "";
+    private ICollection<String> result = null;
+
+    public void processRequest()
+    {
+        List<Movie> preResult = new List<Movie>();
+        foreach (String title in this.request.Split(", ")) {
+            IEnumerable<Movie> movies = repos.GetMovies(title);
+            preResult.AddRange(movies);
+        }
+        this.result = repos.GetSimilar(preResult);
+    }
+}

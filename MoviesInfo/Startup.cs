@@ -28,7 +28,6 @@ namespace MoviesInfo
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
             //NBB!
             services.AddSingleton<Repository>();
             services.AddSingleton<CollectionPrinter>();

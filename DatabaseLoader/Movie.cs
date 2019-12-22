@@ -6,7 +6,7 @@ namespace DatabaseLoader
 {
     public class Movie: IStorable
     {
-        internal static int similarMoviesCount = 10;
+        public const int similarMoviesCount = 10;
         public int Id { get; set; }
         public String imdbId { get; set; }
 
