@@ -11,7 +11,7 @@ namespace DatabaseLoader
         public String tag { get; set; }
 
         HashSet<String> titles;
-        public String titlesSerialized;
+        public String titlesSerialized { get; set; }
 
         public Tag()
         {

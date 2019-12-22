@@ -16,18 +16,17 @@ namespace DatabaseLoader
 
         static void Main(string[] args)
         {
-            //Console.WriteLine("Reloading DB.");
+            Console.WriteLine("Reloading DB.");
             IStorable.serializer = new JsonSerializer(new Type[1] { typeof(HashSet<String>)});
-            using (ApplicationContext applicationContext = new ApplicationContext()) {
-                var query = applicationContext.movies.Where(movie => movie.title.Equals("Transsexual Cock Riders 2"));
-                LinkedList<Movie> result = new LinkedList<Movie>();
-                foreach (Movie m in query.ToList()) {
-                    m.restore();
-                    Console.WriteLine(m);
-                }
+            /*using (ApplicationContext applicationContext = new ApplicationContext()) {
+                var query = applicationContext.tags.Where(tagT => tagT.tag.Equals("1930s"));
+                Tag t = query.FirstOrDefault();
+                if (t != null)
+                    t.restore();
+                Console.WriteLine(t);
             }
             Console.ReadKey();
-            return;
+            return;*/
             using (ApplicationContext applicationContext = new ApplicationContext())
             {
                 applicationContext.Database.EnsureDeleted();

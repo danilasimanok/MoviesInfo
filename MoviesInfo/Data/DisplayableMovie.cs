@@ -5,7 +5,7 @@ namespace MoviesInfo.Data
 {
     public class DisplayableMovie: Movie
     {
-        public String pictureUrl { get; set; }
+        public String imgUrl { get; set; }
         public String description { get; set; }
 
         public DisplayableMovie(Movie movie) {

@@ -22,6 +22,20 @@ namespace MoviesInfo.Data
         }
 
         public void fillSimilar(Movie movie) {/* в следующих обновлениях */}
+
+        public Person GetPerson(string name) {
+            Person result = this.context.persons.Where(person => person.name.Equals(name)).FirstOrDefault();
+            if (result != null)
+                result.restore();
+            return result;
+        }
+
+        public Tag GetTag(string tag) {
+            Tag result = this.context.tags.Where(tagT => tagT.tag.Equals(tag)).FirstOrDefault();
+            if (result != null)
+                result.restore();
+            return result;
+        }
     }
 }
 

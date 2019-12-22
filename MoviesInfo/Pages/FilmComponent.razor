@@ -30,7 +30,7 @@ Input title of film in the field below.
     @foreach (DisplayableMovie movie in this.movies)
     {
         <div>
-            <img src=@movie.pictureUrl /><br />
+            <img src=@movie.imgUrl alt="NO IMAGE" width="300" height="300"/><br />
             TITLE -- @movie.title<br />
             ACTORS: @(CollectionPrinter.Print<String>(movie.getActors()))<br />
             DIRECTORS: @(CollectionPrinter.Print<String>(movie.getDirectors()))<br />
@@ -38,9 +38,12 @@ Input title of film in the field below.
             RATINGS -- @movie.ratings<br />
             DESCRIPTION: @movie.description
         </div>
+        <br />
+        <br />
     }
 }
-else {
+else
+{
     <p>Nothing to show.</p>
 }
 

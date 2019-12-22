@@ -1,5 +1,12 @@
 ﻿@page "/tag"
 
+@using MoviesInfo.Data
+@inject Repository repos
+@inject CollectionPrinter printer
+@inject Connection connection
+
+@using DatabaseLoader
+
 <h3>Tags</h3>
 
 Input tag in the field below.
@@ -19,11 +26,24 @@ Input tag in the field below.
 
 <h4>Result</h4>
 
-TAG --
-<br />
-TITLES:
+@if (this.result == null)
+{
+    <p>Nothing to show.</p>
+}
+else
+{ 
+    <div>
+        TAG -- @this.result.tag
+        <br />
+        TITLES: @(CollectionPrinter.Print<String>(this.result.getTitles()))
+    </div>
+}
 
 @code {
     private string request = "";
-    public void processRequest() { }
+    private Tag result;
+
+    public void processRequest() {
+        this.result = repos.GetTag(this.request);
+    }
 }

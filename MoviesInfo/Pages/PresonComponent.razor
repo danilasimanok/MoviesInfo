@@ -1,5 +1,12 @@
 ﻿@page "/person"
 
+@using MoviesInfo.Data
+@inject Repository repos
+@inject CollectionPrinter printer
+@inject Connection connection
+
+@using DatabaseLoader
+
 <h3>Presons</h3>
 
 Input name of person in the field below.
@@ -19,13 +26,26 @@ Input name of person in the field below.
 
 <h4>Result</h4>
 
-NAME --
-<br />
-PLAYED IN:
-<br />
-DIRECTED:
+@if (this.result == null)
+{
+    <p>Nothing to show.</p>
+}
+else
+{ 
+    <div>
+        NAME -- @this.result.name
+        <br />
+        PLAYED IN: @(CollectionPrinter.Print<String>(result.getPlayedInTitles()))
+        <br />
+        DIRECTED: @(CollectionPrinter.Print<String>(result.getDirectedTitles()))
+    </div>
+}
 
 @code {
     private string request = "";
-    public void processRequest() { }
+    private Person result;
+
+    public void processRequest() {
+        this.result = repos.GetPerson(this.request);
+    }
 }

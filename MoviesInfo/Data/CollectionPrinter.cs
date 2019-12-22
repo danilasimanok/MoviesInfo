@@ -10,7 +10,7 @@ namespace MoviesInfo.Data
     {
         public static string Print<T>(ICollection<T> ts) {
             if(ts == null)
-                return "No data.";
+                return "";
             StringBuilder builder = new StringBuilder(10240);
             foreach (T t in ts)
                 builder.Append(t.ToString() + ", ");
